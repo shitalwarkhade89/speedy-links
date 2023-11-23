@@ -22,3 +22,30 @@ text-align: center;
   padding: 5px 10px;
 
 }
+.btn-generate-link{
+  background-color: rgb(34, 34, 134);
+  color: white;
+  border: none;
+  padding:10px 30px;
+  font-size: 20px;
+  border-radius: 20px;
+  display: block;
+  margin: 10px auto;
+  cursor: pointer;
+
+}
+.cpoy-icon{
+  height: 30px;
+  cursor: pointer;
+  
+}
+.input-short-url{
+  width: 250px;
+  font-size: 20px;
+  padding: 5px 10px;
+}
+.short-url-container{
+  display: flex;
+  justify-content: space-around;
+  align-items:center;
+}

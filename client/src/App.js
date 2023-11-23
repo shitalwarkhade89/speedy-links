@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
+import CopyImage from './copy-icon.png';
 
 function App() {
-const [url , setUrl]= useState('')
-const [slug , setSlug]= useState('')
-const [shortUrl ,setShortUrl] = useState('')
+  const [url, setUrl] = useState('')
+  const [slug, setSlug] = useState('')
+  const [shortUrl, setShortUrl] = useState('')
 
   return (
     <>
@@ -14,22 +15,26 @@ const [shortUrl ,setShortUrl] = useState('')
           <h2>Link Generation</h2>
 
           <input type='text'
-           placeholder='URL' className='user-input'
-           value={url}
-           onChange={(e) => {setUrl(e.target.value)}}
-           />
+            placeholder='URL' className='user-input'
+            value={url}
+            onChange={(e) => { setUrl(e.target.value) }}
+          />
           <input type='text'
-           placeholder='Slug (Optional)' className='user-input'
-           value={slug}
-           onChange={(e) => {setSlug(e.target.value)}}
-           />
-           <input type='text'
-           placeholder='Short url' className='user-input'
-           value={shortUrl}
-          disabled
-           />
-           <button> Do Magic</button>
-           
+            placeholder='Slug (Optional)' className='user-input'
+            value={slug}
+            onChange={(e) => { setSlug(e.target.value) }}
+          />
+          <div className='short-url-container'>
+            <input type='text'
+              placeholder='Short url' className='input-short-url'
+              value={shortUrl}
+              disabled
+            />
+            <img src={CopyImage} alt='copy' className='cpoy-icon' />
+          </div>
+
+          <button type='button' className='btn-generate-link'> Do Magic</button>
+
         </div>
         <div>
           <h2>All Links</h2>
