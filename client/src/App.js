@@ -1,11 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import CopyImage from './copy-icon.png';
+import axios from 'axios';
 
 function App() {
   const [url, setUrl] = useState('')
   const [slug, setSlug] = useState('')
   const [shortUrl, setShortUrl] = useState('')
+  const [links,setLinks] = useState([]);
+
+  const generateLink =  async() =>{
+    const response =await axios.post('/link',{
+    url,
+    slug
+    })
+     setShortUrl(response?.data?.data?.shortUrl)
+     console.log(response?.data?.data?.shortUrl);
+  }
+
+  const copyShortUrl =() => {
+    navigator.clipboard.writeText(shortUrl)
+    alert('COpied to clipboard')
+  }
+  const loadLinks =async () => {
+    const response =await axios.get('/api/links');
+
+    setLinks(response?.data?.data)
+  }
+
+  useEffect(() =>{
+    loadLinks();
+  },[])
 
   return (
     <>
@@ -30,10 +55,10 @@ function App() {
               value={shortUrl}
               disabled
             />
-            <img src={CopyImage} alt='copy' className='cpoy-icon' />
+            <img src={CopyImage} alt='copy' className='cpoy-icon' onClick={copyShortUrl} />
           </div>
 
-          <button type='button' className='btn-generate-link'> Do Magic</button>
+          <button type='button' className='btn-generate-link' onClick={generateLink}> Do Magic</button>
 
         </div>
         <div>
