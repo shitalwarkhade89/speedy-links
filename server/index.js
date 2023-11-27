@@ -18,6 +18,14 @@ const connectDB = async () => {
 };
 connectDB();
 
+app.get('/health', (res, req) => {
+
+    res.json({
+        success: true,
+        message: "status ok"
+    })
+})
+
 app.post("/link", async (req, res) => {
     const { url, slug } = req.body;
 
@@ -25,7 +33,7 @@ app.post("/link", async (req, res) => {
 
     const link = new Link({
         url: url,
-        slug: slug || randomSlug
+        slug: slug || randomSlug,
     })
     try {
         const savedLink = await link.save();
@@ -47,42 +55,58 @@ app.post("/link", async (req, res) => {
 
 app.get("/:slug", async (req, res) => {
     const { slug } = req.params;
-
     const link = await Link.findOne({ slug: slug });
 
-
-    await Link.updateOne({ slug: slug }, {
-        $set: {
-            clicks: link.clicks + 1
+    try {
+        if (!link) {
+            return res.json({
+                success: false,
+                message: "Link not found"
+            })
         }
-    })
-    if (!link) {
-        return res.json({
-            success: false,
-            message: "Link not found"
+        await Link.updateOne({ slug: slug }, {
+            $set: {
+                clicks: link.clicks + 1
+            }
         })
+
+        res.redirect(link.url);
     }
-    res.redirect(link.url);
+    catch (err) {
+        res.json({
+            success: false,
+            message: err.message
+        });
+    }
+
 })
+
 
 app.get('/api/links', async (req, res) => {
 
-   try{
-    const links = await Link.find({});
-    res.json({
-        success: true,
-        data: links,
-        message: "All links featch successfully"
+    try {
+        const links = await Link.find();
+        res.json({
+            success: true,
+            data: links,
+            message: "All links featch successfully"
 
-    });
-   }
-   catch(err){
-     res.json({
-        success: false,
-        message: err.message
-    });
-   }
+        });
+    }
+    catch (err) {
+        res.json({
+            success: false,
+            message: err.message
+        });
+    }
 })
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'))
+    });
+}
 
 
 
@@ -92,10 +116,3 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
-  
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'))
-    });
-  }

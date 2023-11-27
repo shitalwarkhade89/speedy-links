@@ -34,7 +34,7 @@ function App() {
 
   return (
     <>
-    <div >
+    <div>
       <h1 className='text-center'>Speedy Links 🔗</h1>
       <div className='app-container'>
         <div className='link-generation-card'>
@@ -71,7 +71,7 @@ function App() {
               return (
                 <div className='link-card' key={index}>
                   <p className='links'>URL : {url}</p>
-                  <p  className='links'>Short URL : {process.env.SERVER_BASE_URL}/{slug}</p>
+                  <p  className='links'>Short URL : {process.env.REACT_APP_BASE_URL}/{slug}</p>
                   <p  className='links'>Clicks : {clicks}</p>
                 </div>
               )
